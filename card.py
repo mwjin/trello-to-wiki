@@ -8,6 +8,8 @@ class Card:
         self._member_ids = data.get("idMembers")
         self._list_id = data.get("id_list")
         self._desc = data.get("desc")
+        self._list_name = ""
+        self._member_names = []
 
     @property
     def name(self):
@@ -28,3 +30,19 @@ class Card:
     @property
     def desc(self):
         return self._desc
+
+    @property
+    def list_name(self):
+        return self._list_name
+
+    @list_name.setter
+    def list_name(self, value):
+        self._list_name = value
+
+    @property
+    def member_names(self):
+        return list(self._member_names)
+
+    def add_member_name(self, name):
+        self._member_names.append(name)
+
