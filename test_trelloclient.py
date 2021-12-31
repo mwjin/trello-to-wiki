@@ -1,8 +1,6 @@
 import pytest
 import yaml
 
-from card import Card
-from card_list import CardList
 from trelloclient import TrelloClient
 
 
@@ -34,23 +32,55 @@ def card_lists(trello_client, board_id):
 
 
 @pytest.fixture(scope="module")
-def cards(trello_client, card_lists):
-    return trello_client.get_cards(card_lists[0].id)
+def card_list(card_lists):
+    return card_lists[0]
+
+
+@pytest.fixture(scope="module")
+def empty_card_list(card_lists):
+    return card_lists[1]
+
+
+@pytest.fixture(scope="module")
+def cards(trello_client, card_list):
+    return trello_client.get_cards(card_list.id)
+
+
+@pytest.fixture(scope="module")
+def card(cards):
+    return cards[0]
+
+
+@pytest.fixture(scope="module")
+def empty_card(cards):
+    return cards[1]
 
 
 def test_get_card_lists(card_lists):
     assert len(card_lists) == 2
-    assert card_lists[0].name == "List"
-    assert card_lists[1].name == "Empty List"
 
 
 def test_get_cards(cards):
     assert len(cards) == 2
-    assert cards[0].name == "Card"
-    assert cards[1].name == "Empty Card"
 
 
-def test_get_member_name(trello_client, cards):
-    assert (
-        trello_client.get_member_name(cards[0].member_ids[0]) == "Minwoo Jeong"
-    )
+def test_get_cards_from_empty_card_list(trello_client, empty_card_list):
+    assert trello_client.get_cards(empty_card_list.id) == []
+
+
+def test_card_content(card):
+    assert card.name == "Card"
+    assert len(card.member_ids) == 1
+    assert card.desc == "This is a card for testing"
+    assert "Test" in card.labels
+
+
+def test_empty_card(empty_card):
+    assert empty_card.name == "Empty Card"
+    assert empty_card.member_ids == []
+    assert empty_card.desc == ""
+    assert empty_card.labels == set()
+
+
+def test_get_member_name(trello_client, card):
+    assert trello_client.get_member_name(card.member_ids[0]) == "Minwoo Jeong"
