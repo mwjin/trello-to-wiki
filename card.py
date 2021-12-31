@@ -64,3 +64,16 @@ class Card:
         elif "Other Tasks" in self.labels:
             return "Other Tasks"
         return "None"
+
+    @property
+    def wiki(self):
+        if self.category == "Issue" or self.category == "Development":
+            return (
+                f"* {self.name}\n"
+                f"** 담당자: {', '.join(self.member_names)}\n"
+                f"** 상태: {self.list_name}\n"
+                f"{self.desc}"
+            )
+        elif self.category == "Other Tasks":
+            return f"* {self.member_names[0]}\n{self.desc}"
+        return ""
