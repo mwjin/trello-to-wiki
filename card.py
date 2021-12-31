@@ -46,3 +46,12 @@ class Card:
     def add_member_name(self, name):
         self._member_names.append(name)
 
+    @property
+    def category(self):
+        if "Issue" in self.labels:
+            return "Issue"
+        elif "Development" in self.labels:
+            return "Development"
+        elif "Other Tasks" in self.labels:
+            return "Other Tasks"
+        return "None"
