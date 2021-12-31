@@ -40,3 +40,10 @@ def test_get_cards(trello_client, board_id):
     cards = trello_client.get_cards(card_list_id)
     assert len(cards) > 0
     assert isinstance(cards[0], Card)
+
+
+def test_get_member_name(trello_client, board_id):
+    card_lists = trello_client.get_card_lists(board_id)
+    card_list_id = card_lists[2].id
+    cards = trello_client.get_cards(card_list_id)
+    assert trello_client.get_member_name(cards[-2].member_ids[0])
