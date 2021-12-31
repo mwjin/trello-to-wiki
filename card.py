@@ -1,3 +1,6 @@
+from utils import replace_leading_spaces_with_asterisks
+
+
 class Card:
     def __init__(self, data) -> None:
         self._id = data.get("id")
@@ -29,7 +32,13 @@ class Card:
 
     @property
     def desc(self):
-        return self._desc
+        if not self._desc:
+            return ""
+
+        return "\n".join(
+            f"*{replace_leading_spaces_with_asterisks(line)}"
+            for line in self._desc.split("\n")
+        )
 
     @property
     def list_name(self):
