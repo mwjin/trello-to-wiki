@@ -1,6 +1,7 @@
 import pytest
 import yaml
 
+from card import Card
 from cardlist import CardList
 from trelloclient import TrelloClient
 
@@ -38,3 +39,4 @@ def test_get_cards(trello_client, board_id):
     card_list_id = card_lists[0].id
     cards = trello_client.get_cards(card_list_id)
     assert len(cards) > 0
+    assert isinstance(cards[0], Card)
