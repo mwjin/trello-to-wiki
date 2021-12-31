@@ -2,7 +2,7 @@ import pytest
 import yaml
 
 from card import Card
-from cardlist import CardList
+from card_list import CardList
 from trelloclient import TrelloClient
 
 
