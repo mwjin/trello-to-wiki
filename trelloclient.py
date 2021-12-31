@@ -23,3 +23,8 @@ class TrelloClient:
         api_url = f"{self._trello_api_url}/lists/{card_list_id}/cards"
         response = requests.get(f"{api_url}{self.auth_query_string}")
         return [Card(card_data) for card_data in response.json()]
+
+    def get_member_name(self, member_id: str) -> str:
+        api_url = f"{self._trello_api_url}/members/{member_id}"
+        response = requests.get(f"{api_url}{self.auth_query_string}")
+        return response.json().get("fullName")
