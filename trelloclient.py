@@ -11,7 +11,7 @@ class TrelloClient:
         self._trello_api_url = "https://api.trello.com/1"
 
     @property
-    def auth_query_string(self):
+    def auth_query_string(self) -> str:
         return f"?key={self._key}&token={self._token}"
 
     def get_response_data(self, api_url) -> dict:
@@ -20,9 +20,11 @@ class TrelloClient:
 
     def get_card_lists(self, board_id: str) -> list[CardList]:
         api_url = f"{self._trello_api_url}/boards/{board_id}/lists"
-        return [CardList(data) for data in self.get_response_data(api_url)]
+        return [
+            CardList(list_data) for list_data in self.get_response_data(api_url)
+        ]
 
-    def get_cards(self, card_list_id: str) -> list:
+    def get_cards(self, card_list_id: str) -> list[Card]:
         api_url = f"{self._trello_api_url}/lists/{card_list_id}/cards"
         return [
             Card(card_data) for card_data in self.get_response_data(api_url)
