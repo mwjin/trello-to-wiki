@@ -1,5 +1,7 @@
 import requests
 
+from cardlist import CardList
+
 
 class TrelloClient:
     def __init__(self, auth: dict) -> None:
@@ -11,7 +13,7 @@ class TrelloClient:
     def auth_query_string(self):
         return f"?key={self._key}&token={self._token}"
 
-    def get_cardlists(self, board_id: str) -> list:
+    def get_cardlists(self, board_id: str) -> list[CardList]:
         api_url = f"{self._trello_api_url}/boards/{board_id}/lists"
         response = requests.get(f"{api_url}{self.auth_query_string}")
-        return response.json()
+        return [CardList(data) for data in response.json()]
