@@ -28,14 +28,14 @@ def trello_client(auth):
     return TrelloClient(auth)
 
 
-def test_get_cardlists(trello_client, board_id):
-    card_lists = trello_client.get_cardlists(board_id)
+def test_get_card_lists(trello_client, board_id):
+    card_lists = trello_client.get_card_lists(board_id)
     assert len(card_lists) > 0
     assert isinstance(card_lists[0], CardList)
 
 
 def test_get_cards(trello_client, board_id):
-    card_lists = trello_client.get_cardlists(board_id)
+    card_lists = trello_client.get_card_lists(board_id)
     card_list_id = card_lists[0].id
     cards = trello_client.get_cards(card_list_id)
     assert len(cards) > 0
