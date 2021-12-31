@@ -13,7 +13,7 @@ def auth_yml_path():
 
 @pytest.fixture(scope="module")
 def board_id():
-    return "21H6HzC7"
+    return "iREzMfkb"  # Board for testing
 
 
 @pytest.fixture(scope="module")
@@ -28,22 +28,29 @@ def trello_client(auth):
     return TrelloClient(auth)
 
 
-def test_get_card_lists(trello_client, board_id):
-    card_lists = trello_client.get_card_lists(board_id)
-    assert len(card_lists) > 0
-    assert isinstance(card_lists[0], CardList)
+@pytest.fixture(scope="module")
+def card_lists(trello_client, board_id):
+    return trello_client.get_card_lists(board_id)
 
 
-def test_get_cards(trello_client, board_id):
-    card_lists = trello_client.get_card_lists(board_id)
-    card_list_id = card_lists[0].id
-    cards = trello_client.get_cards(card_list_id)
-    assert len(cards) > 0
-    assert isinstance(cards[0], Card)
+@pytest.fixture(scope="module")
+def cards(trello_client, card_lists):
+    return trello_client.get_cards(card_lists[0].id)
 
 
-def test_get_member_name(trello_client, board_id):
-    card_lists = trello_client.get_card_lists(board_id)
-    card_list_id = card_lists[2].id
-    cards = trello_client.get_cards(card_list_id)
-    assert trello_client.get_member_name(cards[-2].member_ids[0])
+def test_get_card_lists(card_lists):
+    assert len(card_lists) == 2
+    assert card_lists[0].name == "List"
+    assert card_lists[1].name == "Empty List"
+
+
+def test_get_cards(cards):
+    assert len(cards) == 2
+    assert cards[0].name == "Card"
+    assert cards[1].name == "Empty Card"
+
+
+def test_get_member_name(trello_client, cards):
+    assert (
+        trello_client.get_member_name(cards[0].member_ids[0]) == "Minwoo Jeong"
+    )
