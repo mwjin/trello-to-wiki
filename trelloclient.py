@@ -9,6 +9,7 @@ class TrelloClient:
         self._key = auth.get("key")
         self._token = auth.get("token")
         self._trello_api_url = "https://api.trello.com/1"
+        self._member_name_cache = {}
 
     @property
     def auth_query_string(self) -> str:
@@ -31,5 +32,9 @@ class TrelloClient:
         ]
 
     def get_member_name(self, member_id: str) -> str:
-        api_url = f"{self._trello_api_url}/members/{member_id}"
-        return self.get_response_data(api_url).get("fullName")
+        if member_id not in self._member_name_cache:
+            self._member_name_cache[member_id] = self.get_response_data(
+                f"{self._trello_api_url}/members/{member_id}"
+            ).get("fullName")
+
+        return self._member_name_cache[member_id]
