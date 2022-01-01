@@ -35,13 +35,8 @@ def main():
 
 
 def print_log(msg: str):
-    print(f"[{_get_curr_time()}] {msg}", file=sys.stderr)
-
-
-def _get_curr_time() -> str:
-    now = datetime.now()
-    curr_time = now.strftime("%H:%M:%S %m/%d/%y")
-    return curr_time
+    current_time = datetime.now().strftime("%H:%M:%S %m/%d/%y")
+    print(f"[{current_time}] {msg}", file=sys.stderr)
 
 
 if __name__ == "__main__":
