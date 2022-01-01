@@ -27,16 +27,20 @@ def main():
             card_map[card.category].append(card)
 
     print_log(f"Print the wiki.")
-    del card_map["None"]
-    for category in card_map:
-        print(f"=={category}==")
-        for card in sorted(card_map[category], key=lambda x: x.name):
-            print(card.wiki)
+    print_wiki(card_map)
 
 
 def print_log(msg: str):
     current_time = datetime.now().strftime("%H:%M:%S %m/%d/%y")
     print(f"[{current_time}] {msg}", file=sys.stderr)
+
+
+def print_wiki(card_map: dict):
+    del card_map["None"]
+    for category in card_map:
+        print(f"=={category}==")
+        for card in sorted(card_map[category], key=lambda x: x.name):
+            print(card.wiki)
 
 
 if __name__ == "__main__":
