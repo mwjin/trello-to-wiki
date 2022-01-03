@@ -36,7 +36,7 @@ class Card:
             return ""
 
         return "\n".join(
-            f"*{replace_leading_spaces_with_asterisks(line)}"
+            f"{replace_leading_spaces_with_asterisks(line)}"
             for line in filter(lambda x: x != "", self._desc.split("\n"))
         )
 
@@ -69,11 +69,11 @@ class Card:
     def wiki(self):
         if self.category == "Issue" or self.category == "Development":
             return (
-                f"* {self.name}\n"
-                f"** 담당자: {', '.join(self.member_names)}\n"
-                f"** 상태: {self.list_name}\n"
+                f"==={self.name}===\n"
+                f"* 담당자: {', '.join(self.member_names)}\n"
+                f"* 상태: {self.list_name}\n"
                 f"{self.desc}"
             )
         elif self.category == "Other Tasks":
-            return f"* {self.member_names[0]}\n{self.desc}"
+            return f"==={self.member_names[0]}===\n{self.desc}"
         return ""
