@@ -37,7 +37,7 @@ class Card:
 
         return "\n".join(
             f"*{replace_leading_spaces_with_asterisks(line)}"
-            for line in self._desc.split("\n")
+            for line in filter(lambda x: x != "", self._desc.split("\n"))
         )
 
     @property
