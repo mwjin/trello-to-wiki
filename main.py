@@ -26,8 +26,8 @@ def main():
                 card.add_member_name(client.get_member_name(member_id))
             card_map[card.category].append(card)
 
-    print_log(f"Print the wiki.")
-    print_wiki(card_map)
+    print_log(f"Create the wiki file '{create_wiki_filename()}'.")
+    create_wiki(card_map, create_wiki_filename())
 
 
 def print_log(msg: str):
@@ -35,12 +35,18 @@ def print_log(msg: str):
     print(f"[{current_time}] {msg}", file=sys.stderr)
 
 
-def print_wiki(card_map: dict):
+def create_wiki_filename():
+    current_date = datetime.now().strftime("%Y%m%d")
+    return f"wiki/{current_date}.txt"
+
+
+def create_wiki(card_map: dict, wiki_filename: str):
     del card_map["None"]
-    for category in card_map:
-        print(f"=={category}==")
-        for card in sorted(card_map[category], key=lambda x: x.name):
-            print(card.wiki)
+    with open(wiki_filename, "w") as outfile:
+        for category in card_map:
+            print(f"=={category}==", file=outfile)
+            for card in sorted(card_map[category], key=lambda x: x.name):
+                print(card.wiki, file=outfile)
 
 
 if __name__ == "__main__":
