@@ -1,7 +1,7 @@
 import requests
 
-from card import Card
-from card_list import CardList
+from trello_to_wiki.card import Card
+from trello_to_wiki.card_list import CardList
 
 
 class TrelloClient:

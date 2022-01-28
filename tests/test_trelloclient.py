@@ -1,7 +1,7 @@
 import pytest
 import yaml
 
-from trelloclient import TrelloClient
+from trello_to_wiki.trelloclient import TrelloClient
 
 
 @pytest.fixture(scope="module")
@@ -72,7 +72,7 @@ def test_card_content(card):
     assert card.name == "Card"
     assert len(card.member_ids) == 1
     assert card.desc == (
-        "** This is a card for testing.\n"
+        "* This is a card for testing.\n"
         "*** Subline 1\n"
         "**** Sub-Subline 1\n"
         "*** Subline 2"

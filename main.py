@@ -4,7 +4,7 @@ from datetime import datetime
 
 import yaml
 
-from trelloclient import TrelloClient
+from trello_to_wiki.trelloclient import TrelloClient
 
 
 def main():

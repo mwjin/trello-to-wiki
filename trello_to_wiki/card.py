@@ -1,4 +1,4 @@
-from utils import replace_leading_spaces_with_asterisks
+from trello_to_wiki.utils import replace_leading_spaces_with_asterisks
 
 
 class Card:
