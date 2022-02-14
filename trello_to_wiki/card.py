@@ -66,11 +66,19 @@ class Card:
         return "None"
 
     @property
+    def has_customer_label(self):
+        return "Customer" in self.labels
+
+    @property
     def wiki(self):
         if self.category == "Issue" or self.category == "Development":
+            header = (
+                f"==={self.name} (Report)==="
+                if self.has_customer_label
+                else f"==={self.name}==="
+            )
             return (
-                f"==={self.name}===\n"
-                f"* 담당자: {', '.join(self.member_names)}\n"
+                f"{header}\n* 담당자: {', '.join(self.member_names)}\n"
                 f"* 상태: {self.list_name}\n"
                 f"{self.desc}"
             )
