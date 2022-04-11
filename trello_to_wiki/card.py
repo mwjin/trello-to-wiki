@@ -66,15 +66,15 @@ class Card:
         return "None"
 
     @property
-    def has_customer_label(self):
-        return "Customer" in self.labels
+    def should_report(self):
+        return "Reported" in self.labels
 
     @property
     def wiki(self):
         if self.category == "Issue" or self.category == "Development":
             header = (
-                f"==={self.name} (Report)==="
-                if self.has_customer_label
+                f"==={self.name} (Reported)==="
+                if self.should_report
                 else f"==={self.name}==="
             )
             return (
