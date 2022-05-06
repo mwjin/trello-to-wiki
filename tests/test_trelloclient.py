@@ -72,10 +72,10 @@ def test_card_content(card):
     assert card.name == "Card"
     assert len(card.member_ids) == 1
     assert card.desc == (
-        "* This is a card for testing.\n"
-        "** Subline 1\n"
-        "*** Sub-Subline 1\n"
-        "** Subline 2"
+        "** This is a card for testing.\n"
+        "*** Subline 1\n"
+        "**** Sub-Subline 1\n"
+        "*** Subline 2"
     )
     assert "Test" in card.labels
 
