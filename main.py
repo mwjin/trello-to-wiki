@@ -7,27 +7,46 @@ import yaml
 from trello_to_wiki.trelloclient import TrelloClient
 
 
-def main():
-    with open("auth.yml") as infile:
-        auth = yaml.safe_load(infile)
-    client = TrelloClient(auth)
+class TrelloToWiki:
+    def __init__(self):
+        with open("auth.yml") as infile:
+            auth = yaml.safe_load(infile)
+        self.client = TrelloClient(auth)
+        self.board_id = "21H6HzC7"
+        self._card_map = None
 
-    print_log("Collect the card lists from the Trello board.")
-    board_id = "21H6HzC7"
-    card_lists = client.get_card_lists(board_id)
+    @property
+    def card_lists(self) -> list:
+        print_log("Collect the card lists from the Trello board.")
+        return self.client.get_card_lists(self.board_id)
 
-    card_map = defaultdict(list)
-    for card_list in card_lists:
-        print_log(f"Collect the cards from the list '{card_list.name}'.")
-        cards = client.get_cards(card_list.id)
-        for card in cards:
-            card.list_name = card_list.name
-            for member_id in card.member_ids:
-                card.add_member_name(client.get_member_name(member_id))
-            card_map[card.category].append(card)
+    @property
+    def card_map(self) -> dict:
+        if self._card_map:
+            return self._card_map
 
-    print_log(f"Create the wiki file '{create_wiki_filename()}'.")
-    create_wiki(card_map, create_wiki_filename())
+        result = defaultdict(list)
+        for card_list in self.card_lists:
+            print_log(f"Collect the cards from the list '{card_list.name}'.")
+            cards = self.client.get_cards(card_list.id)
+            for card in cards:
+                card.list_name = card_list.name
+                for member_id in card.member_ids:
+                    card.add_member_name(self.client.get_member_name(member_id))
+                result[card.category].append(card)
+        self._card_map = result
+        return result
+
+    def create_wiki(self, wiki_filename: str):
+        print_log(f"Create the wiki file '{wiki_filename}'.")
+        del self.card_map["None"]
+        with open(wiki_filename, "w") as outfile:
+            for category in self.card_map:
+                print(f"=={category}==", file=outfile)
+                for card in sorted(
+                    self.card_map[category], key=lambda x: x.name
+                ):
+                    print(card.wiki, file=outfile)
 
 
 def print_log(msg: str):
@@ -40,14 +59,5 @@ def create_wiki_filename():
     return f"wiki/{current_date}.txt"
 
 
-def create_wiki(card_map: dict, wiki_filename: str):
-    del card_map["None"]
-    with open(wiki_filename, "w") as outfile:
-        for category in card_map:
-            print(f"=={category}==", file=outfile)
-            for card in sorted(card_map[category], key=lambda x: x.name):
-                print(card.wiki, file=outfile)
-
-
 if __name__ == "__main__":
-    main()
+    TrelloToWiki().create_wiki(create_wiki_filename())
