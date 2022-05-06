@@ -31,7 +31,6 @@ class TrelloToWiki:
             print_log(f"Collect the cards from the list '{card_list.name}'.")
             cards = self.client.get_cards(card_list.id)
             for card in cards:
-                card.list_name = card_list.name
                 for member_id in card.member_ids:
                     card.add_member_name(self.client.get_member_name(member_id))
                 if card.category not in result:

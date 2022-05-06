@@ -11,7 +11,6 @@ class Card:
         self._member_ids = data.get("idMembers")
         self._list_id = data.get("id_list")
         self._desc = data.get("desc")
-        self._list_name = ""
         self._member_names = []
 
     @property
@@ -39,14 +38,6 @@ class Card:
             f"*{replace_leading_spaces_with_asterisks(line)}"
             for line in filter(lambda x: x != "", self._desc.split("\n"))
         )
-
-    @property
-    def list_name(self):
-        return self._list_name
-
-    @list_name.setter
-    def list_name(self, value):
-        self._list_name = value
 
     @property
     def member_names(self):
