@@ -52,8 +52,6 @@ class Card:
             return "Issue"
         elif "Development" in self.labels:
             return "Development"
-        elif "Other Tasks" in self.labels:
-            return "Other Tasks"
         return "None"
 
     @property
@@ -72,6 +70,4 @@ class Card:
                 f"{header}\n** 담당자: {', '.join(self.member_names)}\n"
                 f"{self.desc}"
             )
-        elif self.category == "Other Tasks":
-            return f"* {self.member_names[0]}\n{self.desc}"
         return ""
